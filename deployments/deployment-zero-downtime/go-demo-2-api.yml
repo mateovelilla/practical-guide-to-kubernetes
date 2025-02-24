@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-demo-2-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: api
+      service: go-demo-2
+  minReadySeconds: 1 # minimum number of seconds before Kubernetes starts considering the Pods healthy
+  progressDeadlineSeconds: 60 #  is an optional field that specifies the number of seconds you want to wait for your Deployment to progress before the system reports back that the Deployment has failed progressing
+  revisionHistoryLimit: 5 # It defines the number of old ReplicaSets we can roll back
+  strategy:
+    type: RollingUpdate 
+    # strategy is the default type for a good reason. It allows us to deploy new releases without downtime.
+    # It creates a new ReplicaSet with zero replicas and, depending on other parameters, increases the replicas of the new one and decreases those from the old one
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        type: api
+        service: go-demo-2
+        language: go
+    spec:
+      containers:
+      - name: api
+        image: vfarcic/go-demo-2
+        env:
+        - name: DB
+          value: go-demo-2-db
+        readinessProbe:
+          httpGet:
+            path: /demo/hello
+            port: 8080
+          periodSeconds: 1
+        livenessProbe:
+          httpGet:
+            path: /demo/hello
+            port: 8080
