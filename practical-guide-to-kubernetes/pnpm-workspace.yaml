@@ -1,0 +1,4 @@
+ignoredBuiltDependencies:
+  - yarn
+onlyBuiltDependencies:
+  - unrs-resolver
