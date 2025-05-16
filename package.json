@@ -2,12 +2,19 @@
   "name": "practical-guide-to-kubernetes",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --import=tsx  --experimental-transform-types index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "tsx": "^4.19.4"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.10.1"
+  }
 }
