@@ -1,25 +1,13 @@
 import * as p from "@clack/prompts";
-const group = await p.group(
-	{
-		name: () => p.text({ message: "What is your name?" }),
-		age: () => p.text({ message: "What is your age?" }),
-		color: ({ results }) =>
-			p.multiselect({
-				message: `What is your favorite color ${results.name}?`,
-				options: [
-					{ value: "red", label: "Red" },
-					{ value: "green", label: "Green" },
-					{ value: "blue", label: "Blue" },
-				],
-			}),
-	},
-	{
-		// On Cancel callback that wraps the group
-		// So if the user cancels one of the prompts in the group this function will be called
-		onCancel: ({ results }) => {
-			p.cancel("Operation cancelled.");
-		},
-	},
-);
-
-console.log(group.name, group.age, group.color);
+import { StateClusterHandler } from "./src/handlers/stateCluster.ts";
+import { type Request } from "./src/handlers/request.type.ts";
+const clusterName = await p.text({
+  message: 'What is the cluster name?',
+  initialValue: 'myCluster'
+});
+const request: Request = {
+	clusterName
+} 
+const stateCluster = new StateClusterHandler();
+stateCluster.handle(request)
+console.log(clusterName)
