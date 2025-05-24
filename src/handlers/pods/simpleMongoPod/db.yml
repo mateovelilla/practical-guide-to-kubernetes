@@ -7,7 +7,10 @@ metadata:
     vendor: MongoLabs
 spec:
   containers:
-  - name: db
-    image: mongo:3.3
-    command: ["mongod"]
-    args: ["--rest", "--httpinterface"]
+    - name: db
+      image: mongo:3.3
+      command:
+        - mongod
+      args:
+        - '--rest'
+        - '--httpinterface'

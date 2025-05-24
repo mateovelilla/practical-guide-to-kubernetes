@@ -1,10 +1,39 @@
-import { spinner, log } from "@clack/prompts";
-
+import { readFileSync, writeFileSync } from "node:fs"
+import {resolve, dirname } from "node:path"
+import { fileURLToPath } from 'url';
+import { spinner, log, text } from "@clack/prompts";
+import yaml from "js-yaml"
 import { AbstractHandler } from "../../handler.abstract.ts"
 import { type Request } from "../../request.type.ts"
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 export class SimpleMongoPodHandler extends AbstractHandler {
     public async handle(request: Request) {
-        console.log("Chain SimpleMongoPodHandler")
-        return await super.handle(request)
+        try {
+            const loader = spinner()
+            const fileContent = readFileSync(resolve(__dirname, 'db.yml'), 'utf8');
+            const manifest = yaml.load(fileContent);
+            const containerName = await text({
+                message: 'Enter the name of the container',
+                initialValue: 'db'
+            });
+            manifest.spec.containers[0].name = containerName
+            const newYaml = yaml.dump(manifest);
+            writeFileSync(resolve(__dirname,'db.yml'), newYaml, 'utf8');
+            loader.start(`Creating ${containerName} pod!`);
+            const { stdout: outputKubectl, stderr: outputKubectlError } =  await super.runCommand("kubectl",["create", "-f", `${__dirname}/db.yml`])
+            log.info(outputKubectl);
+            log.warn(outputKubectlError)
+            loader.stop("")
+            const { stdout: outputGetPods, stderr: outputGetPodsError } =  await super.runCommand("kubectl",["get", "pods"])
+            log.info(outputGetPods);
+            log.warn(outputGetPodsError)
+        } catch (error) {
+            console.log(error)
+        }finally {
+            console.log("Chain SimpleMongoPodHandler")
+            return await super.handle(request)
+        }
+       
     }
 }
