@@ -1,4 +1,3 @@
-import { readFileSync, writeFileSync } from "node:fs"
 import { dirname } from "node:path"
 import { fileURLToPath } from 'url';
 import { spinner, log, text } from "@clack/prompts";

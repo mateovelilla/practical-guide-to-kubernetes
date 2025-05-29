@@ -31,7 +31,6 @@ export class SimpleMongoPodHandler extends AbstractHandler {
         } catch (error) {
             console.log(error)
         }finally {
-            console.log("Chain SimpleMongoPodHandler")
             return await super.handle(request)
         }
        
