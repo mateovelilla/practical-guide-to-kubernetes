@@ -1,4 +1,4 @@
-import { spinner, log, select } from "@clack/prompts";
+import { select } from "@clack/prompts";
 import { SimpleMongoPodHandler } from "../handlers/pods/simpleMongoPod/index.ts"
 import { SimpleApiMongoHandler } from "../handlers/pods/simpleAPIMongoDB/index.ts"
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
