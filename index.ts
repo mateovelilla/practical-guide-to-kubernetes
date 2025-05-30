@@ -3,12 +3,14 @@ import { StateClusterHandler } from "./src/handlers/stateCluster.ts";
 import { type Request } from "./src/handlers/request.type.ts";
 import * as pods from "./src/proxies/pods.ts"
 import * as replicaset from "./src/proxies/replicaset.ts"
+import * as service from "./src/proxies/services.ts"
 import * as deleteCluster from "./src/proxies/delete.ts"
 const projects = await p.select({
   message: 'Pick an implementation',
   options: [
     { value: 'pods', label: 'Pods' },
     { value: 'replicaset', label: 'ReplicaSet' },
+    { value: 'service', label: 'Sevices' },
     { value: 'delete', label: 'Delete Cluster' },
 
   ],
@@ -35,6 +37,11 @@ switch (projects) {
   case "delete":
     const deleteHandler = await deleteCluster.run()
     await deleteHandler.handle(request)
+    break;
+  case "service":
+    const serviceHandler = await service.run()
+    stateCluster.setNext(serviceHandler)
+    await stateCluster.handle(request)
     break;
   default:
     break;
