@@ -24,17 +24,12 @@ export class ServiceWithReplicaSetHandler extends AbstractHandler {
                 const statusPods = JSON.parse(outputStatusPods)
                 loading = !statusPods.items.every(pod=> pod.status.phase === 'Running')
             }
-            loader.stop(`The pods already!`);
-            loader.start("Creating port-forward service 3000:28017, address 0.0.0.0")
-            const { stdout: outputPortForwarding, stderr: outputPortForwardingError } =  await super.runCommand("nohup ",["kubectl","port-forward", "service/go-demo-2", "3000:28017", "--address", "0.0.0.0", " > portforward.log 2>&1 &"])
-            loader.stop(outputPortForwarding);
+            loader.stop("____________________________")
+            log.message('Listening port 300', { symbol: '👂' });
+            const { stdout: outputPortForwarding, stderr: outputPortForwardingError } =  await super.runCommand("kubectl",["port-forward", "service/go-demo-2", "3000:28017", "--address", "0.0.0.0"])
+            loader.info(outputPortForwarding);
             log.warn(outputPortForwardingError)
-            const { stdout: outputGetReplicasets, stderr: outputGetReplicasetsError } =  await super.runCommand("kubectl",["get", "rs"])
-            log.info(outputGetReplicasets);
-            log.warn(outputGetReplicasetsError)
-            const { stdout: outputDescribeManifest, stderr: outputDescribeManifestError } =  await super.runCommand("kubectl",["describe", "-f",  `${__dirname}/replicasets.yml`])
-            log.info(outputDescribeManifest);
-            log.warn(outputDescribeManifestError)
+
         } catch (error) {
             console.log(error)
         }finally {
