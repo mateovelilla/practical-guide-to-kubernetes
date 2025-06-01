@@ -2,6 +2,8 @@ import { select } from "@clack/prompts";
 import { SimpleMongoPodHandler } from "../handlers/pods/simpleMongoPod/index.ts"
 import { SimpleApiMongoHandler } from "../handlers/pods/simpleAPIMongoDB/index.ts"
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
+import { StatusPodsCheckerHandler } from "../handlers/utils/statusPodsChecker/index.ts"
+import { ListPodsHandler } from "../handlers/utils/listPods/index.ts"
 export async function run(){
     let handler: AbstractHandler
     const podProject = await select({
@@ -14,7 +16,11 @@ export async function run(){
     });
     switch (podProject) {
         case "simple-mongo-pod":
+            const statusCheckerPods = new StatusPodsCheckerHandler()
+            const listPods = new ListPodsHandler();
             handler = new SimpleMongoPodHandler();
+            statusCheckerPods.setNext(listPods)
+            handler.setNext(statusCheckerPods)
             break;
         case "simple-api-mongo-pod":
             handler = new SimpleApiMongoHandler();

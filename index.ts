@@ -1,11 +1,12 @@
 import * as p from "@clack/prompts";
-import { StateClusterHandler } from "./src/handlers/stateCluster.ts";
 import { type Request } from "./src/handlers/request.type.ts";
 import * as pods from "./src/proxies/pods.ts"
 import * as replicaset from "./src/proxies/replicaset.ts"
 import * as service from "./src/proxies/services.ts"
 import * as deployment from "./src/proxies/deployments.ts"
-import * as deleteCluster from "./src/proxies/delete.ts"
+import { DeleteClusterHandler } from "./src/handlers/utils/deleteCluster/index.ts"
+import { CreateClusterHandler } from "./src/handlers/utils/createCluster/index.ts"
+import { AbstractHandler } from "./src/handlers/handler.abstract.ts";
 const projects = await p.select({
   message: 'Pick an implementation',
   options: [
@@ -14,45 +15,37 @@ const projects = await p.select({
     { value: 'service', label: 'Sevices' },
     { value: 'deployment', label: 'Deployments' },
     { value: 'delete', label: 'Delete Cluster' },
-    
 
   ],
 });
-const clusterName = await p.text({
-  message: 'What is the cluster name?',
-  initialValue: 'myCluster'
-});
 const request: Request = {
-	clusterName
+	clusterName: ""
 }
-const stateCluster = new StateClusterHandler();
+const createCluster = new CreateClusterHandler()
+let lastChain: AbstractHandler;
 switch (projects) {
   case "pods":
-    const podHandler = await pods.run()
-    stateCluster.setNext(podHandler)
-    await stateCluster.handle(request)
+    lastChain = await pods.run()
     break;
   case "replicaset":
-    const replicasetHandler = await replicaset.run()
-    stateCluster.setNext(replicasetHandler)
-    await stateCluster.handle(request)
-    break;
-  case "delete":
-    const deleteHandler = await deleteCluster.run()
-    await deleteHandler.handle(request)
+    lastChain = await replicaset.run()
     break;
   case "service":
-    const serviceHandler = await service.run()
-    stateCluster.setNext(serviceHandler)
-    await stateCluster.handle(request)
+    lastChain = await service.run()
     break;
   case "deployment":
-    const deploymentHandler = await deployment.run()
-    stateCluster.setNext(deploymentHandler)
-    await stateCluster.handle(request)
+    lastChain = await deployment.run()
+    break;
+  case "delete":
+    const deleteHandler = new DeleteClusterHandler();
+    await deleteHandler.handle(request)
     break;
   default:
     break;
+}
+if(projects!='delete') {
+  createCluster.setNext(lastChain)
+  await createCluster.handle(request)
 }
 
 

@@ -25,9 +25,6 @@ export class SimpleMongoPodHandler extends AbstractHandler {
             log.info(outputKubectl);
             log.warn(outputKubectlError)
             loader.stop("")
-            const { stdout: outputGetPods, stderr: outputGetPodsError } =  await super.runCommand("kubectl",["get", "pods"])
-            log.info(outputGetPods);
-            log.warn(outputGetPodsError)
         } catch (error) {
             console.log(error)
         }finally {

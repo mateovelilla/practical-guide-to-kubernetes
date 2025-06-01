@@ -1,7 +1,7 @@
 import { spinner, log } from "@clack/prompts";
 
-import { AbstractHandler } from "./handler.abstract.ts"
-import { type Request } from "./request.type.ts"
+import { AbstractHandler } from "../../handler.abstract.ts"
+import { type Request } from "../../request.type.ts"
 export class DeleteClusterHandler extends AbstractHandler {
     public async handle(request: Request){
         const loader = spinner()
