@@ -4,10 +4,12 @@ import { DeleteReplicasetHandler } from "../handlers/replicasets/deleteReplicaSe
 import { AssociateReplicasetHandler } from "../handlers/replicasets/associateReplicaSet/index.ts"
 import { StatusReplicasCheckerHandler } from "../handlers/utils/statusReplicasetChecker/index.ts"
 import { ListReplicasetHandler } from "../handlers/utils/listReplicaset/index.ts"
+import { ExposePortHandler } from "../handlers/utils/exposeServiceViaPort/index.ts"
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
 export async function run(){
     const statusCheckerReplica = new StatusReplicasCheckerHandler()
-    const listeReplicaSets = new ListReplicasetHandler()
+    const listReplicaSets = new ListReplicasetHandler()
+    const exposePort = new ExposePortHandler()
     let handler: AbstractHandler
     const replicaProject = await select({
         message: 'What project do you want to implement?',
@@ -32,7 +34,8 @@ export async function run(){
         default:
             break;
     }
-    statusCheckerReplica.setNext(listeReplicaSets);
+    listReplicaSets.setNext(exposePort)
+    statusCheckerReplica.setNext(listReplicaSets);
     handler.setNext(statusCheckerReplica);
     return handler
 }

@@ -1,8 +1,14 @@
 import { select } from "@clack/prompts";
 import { ServiceWithReplicaSetHandler } from "../handlers/services/serviceWithReplicaset/index.ts"
 import { ServiceWithReplicaSetInTheSameFileHandler } from "../handlers/services/serviceAllInTheSameFile/index.ts";
+import { StatusReplicasCheckerHandler } from "../handlers/utils/statusReplicasetChecker/index.ts"
+import { ListReplicasetHandler } from "../handlers/utils/listReplicaset/index.ts"
+import { ExposePortHandler } from "../handlers/utils/exposeServiceViaPort/index.ts"
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
 export async function run(){
+    const statusCheckerReplica = new StatusReplicasCheckerHandler()
+    const listReplicaSets = new ListReplicasetHandler()
+    const exposePort = new ExposePortHandler()
     let handler: AbstractHandler
     const podProject = await select({
         message: 'What project do you want to implement?',
@@ -22,5 +28,8 @@ export async function run(){
         default:
             break;
     }
+    listReplicaSets.setNext(exposePort)
+    statusCheckerReplica.setNext(listReplicaSets);
+    handler.setNext(statusCheckerReplica);
     return handler
 }

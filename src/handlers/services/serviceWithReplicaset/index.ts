@@ -17,17 +17,9 @@ export class ServiceWithReplicaSetHandler extends AbstractHandler {
             log.info(outputService);
             log.warn(outputServiceError)
             loader.stop("____________________________")
-            let loading = true
-            loader.start(`Waiting for creation of pods!`);
-            while(loading) {
-                const { stdout: outputStatusPods } =  await super.runCommand("kubectl",["get", "pods", "-o", "json"])
-                const statusPods = JSON.parse(outputStatusPods)
-                loading = !statusPods.items.every(pod=> pod.status.phase === 'Running')
-            }
-            loader.stop("____________________________");
-            log.message('Listening port 3000', { symbol: '👂' });
-            await super.runCommand("kubectl",["port-forward", "service/go-demo-2", "3000:28017", "--address", "0.0.0.0"]);
-
+            request.exposedPort = 3000
+            request.localPort = 28017
+            request.serviceName = 'go-demo-2'
         } catch (error) {
             console.log(error)
         }finally {
