@@ -25,7 +25,7 @@ export class ServiceWithReplicaSetHandler extends AbstractHandler {
                 loading = !statusPods.items.every(pod=> pod.status.phase === 'Running')
             }
             loader.stop("____________________________");
-            log.message('Listening port 300', { symbol: '👂' });
+            log.message('Listening port 3000', { symbol: '👂' });
             await super.runCommand("kubectl",["port-forward", "service/go-demo-2", "3000:28017", "--address", "0.0.0.0"]);
 
         } catch (error) {

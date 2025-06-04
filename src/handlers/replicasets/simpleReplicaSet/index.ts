@@ -14,12 +14,6 @@ export class SimpleReplicasetHandler extends AbstractHandler {
             log.info(outputKubectl);
             log.warn(outputKubectlError)
             loader.stop("")
-            const { stdout: outputGetReplicasets, stderr: outputGetReplicasetsError } =  await super.runCommand("kubectl",["get", "rs"])
-            log.info(outputGetReplicasets);
-            log.warn(outputGetReplicasetsError)
-            const { stdout: outputDescribeManifest, stderr: outputDescribeManifestError } =  await super.runCommand("kubectl",["describe", "-f",  `${__dirname}/replicasets.yml`])
-            log.info(outputDescribeManifest);
-            log.warn(outputDescribeManifestError)
         } catch (error) {
             console.log(error)
         }finally {
