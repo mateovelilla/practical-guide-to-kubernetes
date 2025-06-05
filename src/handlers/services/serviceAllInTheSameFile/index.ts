@@ -8,22 +8,15 @@ const __dirname = dirname(__filename);
 export class ServiceWithReplicaSetInTheSameFileHandler extends AbstractHandler {
     public async handle(request: Request) {
         try {
+            request.exposedPort = 3000
+            request.localPort = 8080
+            request.serviceName = 'go-demo-2-api'
             const loader = spinner()
             loader.start(`Creating service!`);
             const { stdout: outputKubectl, stderr: outputKubectlError } =  await super.runCommand("kubectl",["create", "-f", `${__dirname}/replicaset-service.yml`])
             log.info(outputKubectl);
             log.warn(outputKubectlError)
             loader.stop("____________________________")
-            let loading = true
-            loader.start(`Waiting for creation of pods!`);
-            while(loading) {
-                const { stdout: outputStatusPods } =  await super.runCommand("kubectl",["get", "pods", "-o", "json"])
-                const statusPods = JSON.parse(outputStatusPods)
-                loading = !statusPods.items.every(pod=> pod.status.phase === 'Running')
-            }
-            loader.stop("____________________________");
-            log.message('Listening port 3000', { symbol: '👂' });
-            await super.runCommand("kubectl",["port-forward", "service/go-demo-2-api", "3000:8080", "--address", "0.0.0.0"])
         } catch (error) {
             console.log(error)
         }finally {
