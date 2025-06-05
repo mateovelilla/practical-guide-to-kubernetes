@@ -1,8 +1,11 @@
 import { select } from "@clack/prompts";
 import { SimpleMongoDeploymentHandler } from "../handlers/deployments/simpleMongoDeployment/index.ts"
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
+import { StatusPodsCheckerHandler } from "../handlers/utils/statusPodsChecker/index.ts";
+import { StatusDeploymentsCheckerHandler } from "../handlers/utils/statusDeploymentsChecker/index.ts";
+import { ListPodsHandler } from "../handlers/utils/listPods/index.ts";
+
 export async function run(){
-    let handler: AbstractHandler
     const podProject = await select({
         message: 'What project do you want to implement?',
         options: [
@@ -10,6 +13,10 @@ export async function run(){
             { value: 'Other', label: 'nothing' },
         ],
     });
+    const statusCheckerPods = new StatusPodsCheckerHandler()
+    const statusCheckerDeployments = new StatusDeploymentsCheckerHandler()
+    const listPods = new ListPodsHandler();
+    let handler: AbstractHandler
     switch (podProject) {
         case "simple-mongo-deployment":
             handler = new SimpleMongoDeploymentHandler();
@@ -17,5 +24,8 @@ export async function run(){
         default:
             break;
     }
+    statusCheckerDeployments.setNext(listPods)
+    statusCheckerPods.setNext(statusCheckerDeployments)
+    handler.setNext(statusCheckerPods)
     return handler
 }

@@ -14,17 +14,6 @@ export class SimpleMongoDeploymentHandler extends AbstractHandler {
             log.info(outputKubectl);
             log.warn(outputKubectlError)
             loader.stop("____________________________")
-            let loading = true
-            loader.start(`Waiting for creation of pods!`);
-            while(loading) {
-                const { stdout: outputStatusPods } =  await super.runCommand("kubectl",["get", "pods", "-o", "json"])
-                const statusPods = JSON.parse(outputStatusPods)
-                loading = !statusPods.items.every(pod=> pod.status.phase === 'Running')
-            }
-            loader.stop("____________________________");
-            const { stdout: outputDescribeManifest, stderr: outputDescribeManifestError } =  await super.runCommand("kubectl",["get", "all"])
-            log.info(outputDescribeManifest);
-            log.warn(outputDescribeManifestError)
         } catch (error) {
             console.log(error)
         }finally {
