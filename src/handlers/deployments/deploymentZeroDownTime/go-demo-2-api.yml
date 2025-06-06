@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       type: api
-      service: go-demo-2
+      service: go-demo-2-api
   minReadySeconds: 1 # minimum number of seconds before Kubernetes starts considering the Pods healthy
   progressDeadlineSeconds: 60 #  is an optional field that specifies the number of seconds you want to wait for your Deployment to progress before the system reports back that the Deployment has failed progressing
   revisionHistoryLimit: 5 # It defines the number of old ReplicaSets we can roll back
@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         type: api
-        service: go-demo-2
+        service: go-demo-2-api
         language: go
     spec:
       containers:
