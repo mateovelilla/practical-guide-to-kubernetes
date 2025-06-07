@@ -4,7 +4,10 @@ import { type Request } from "../../request.type.ts"
 export class ListPodsHandler extends AbstractHandler {
     public async handle(request: Request) {
         try {
-            const { stdout: outputGetPods, stderr: outputGetPodsError } =  await super.runCommand("kubectl",["get", "pods"])
+            const args = ["get", "pods"];
+            if(request.namespace)
+                args.push("-n", request.namespace)
+            const { stdout: outputGetPods, stderr: outputGetPodsError } =  await super.runCommand("kubectl",args)
             log.info(outputGetPods);
             log.warn(outputGetPodsError)
         } catch (error) {

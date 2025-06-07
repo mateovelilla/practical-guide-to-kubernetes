@@ -4,6 +4,7 @@ import * as pods from "./src/proxies/pods.ts"
 import * as replicaset from "./src/proxies/replicaset.ts"
 import * as service from "./src/proxies/services.ts"
 import * as deployment from "./src/proxies/deployments.ts"
+import * as ingress from "./src/proxies/ingress.ts"
 import { DeleteClusterHandler } from "./src/handlers/utils/deleteCluster/index.ts"
 import { CreateClusterHandler } from "./src/handlers/utils/createCluster/index.ts"
 import { AbstractHandler } from "./src/handlers/handler.abstract.ts";
@@ -14,7 +15,9 @@ const projects = await p.select({
     { value: 'replicaset', label: 'ReplicaSet' },
     { value: 'service', label: 'Sevices' },
     { value: 'deployment', label: 'Deployments' },
+    { value: 'ingress', label: 'Ingress Controllers' },
     { value: 'delete', label: 'Delete Cluster' },
+
 
   ],
 });
@@ -35,6 +38,9 @@ switch (projects) {
     break;
   case "deployment":
     lastChain = await deployment.run()
+    break;
+  case "ingress":
+    lastChain = await ingress.run()
     break;
   case "delete":
     const deleteHandler = new DeleteClusterHandler();

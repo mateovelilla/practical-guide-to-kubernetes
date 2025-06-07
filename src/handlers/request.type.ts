@@ -3,4 +3,5 @@ export type Request = {
     localPort: Number;
     exposedPort: Number;
     serviceName: String;
+    namespace: string;
 };
