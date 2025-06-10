@@ -5,12 +5,12 @@ import { AbstractHandler } from "../../handler.abstract.ts"
 import { type Request } from "../../request.type.ts"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-export class NginxIngressControllerHandler extends AbstractHandler {
+export class NginxIngressBasedOnPathsHandler extends AbstractHandler {
     public async handle(request: Request) {
         try {
             const loader = spinner()
             loader.start(`Creating Ngnix Controller!`);
-            const { stdout: outputKubectl, stderr: outputKubectlError } =  await super.runCommand("kubectl",["apply", "-f", `${__dirname}/deploy.yml`])
+            const { stdout: outputKubectl, stderr: outputKubectlError } =  await super.runCommand("kubectl",["create", "-f", `${__dirname}/ingress-based-on-paths.yml`, "--record", "--save-config"])
             request.namespace = "ingress-nginx"
             request.serviceName = "ingress-nginx-controller"
             request.exposedPort = 3000
