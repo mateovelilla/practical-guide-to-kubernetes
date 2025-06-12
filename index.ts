@@ -17,6 +17,7 @@ const projects = await p.select({
     { value: 'service', label: 'Sevices' },
     { value: 'deployment', label: 'Deployments' },
     { value: 'ingress', label: 'Ingress Controllers' },
+    { value: 'volumes', label: 'Volumes' },
     { value: 'delete', label: 'Delete Cluster' },
 
 
@@ -44,8 +45,7 @@ switch (projects) {
     lastChain = await ingress.run()
     break;
   case "volumes":
-      lastChain = new volumes.run()
-      await lastChain.handle()
+      await volumes.run()
     break;
   case "delete":
     lastChain = new DeleteClusterHandler();
@@ -53,7 +53,7 @@ switch (projects) {
   default:
     break;
 }
-if(projects !='delete' && projects != 'volumes') {
+if(projects != 'volumes') {
   createCluster.setNext(lastChain)
   await createCluster.handle(request)
 }

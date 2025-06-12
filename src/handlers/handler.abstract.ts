@@ -25,9 +25,14 @@ export abstract class AbstractHandler implements Handler<Request,Request>
         });
     }
     public async handle(request?: Request ) {
-        if (this.nextHandler) {
+        try {
+            if (this.nextHandler) {
             return await this.nextHandler.handle(request);
         }
         return null;
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 }

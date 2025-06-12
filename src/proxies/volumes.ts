@@ -1,15 +1,10 @@
 import { select } from "@clack/prompts";
-// import { NginxIngressControllerHandler } from "../handlers/ingress/nginx-ingress-controller/index.ts"
-// import { NginxIngressBasedOnPathsHandler } from "../handlers/ingress/nginx-ingress-based-on-paths/index.ts"
+import { SharingFilePrometheusConfigHandler } from "../handlers/volumes/sharing-file-prometheus-config/index.ts"
+import { StatusPodsCheckerHandler } from "../handlers/utils/statusPodsChecker/index.ts"
+import { ExposePortHandler } from "../handlers/utils/exposeServiceViaPort/index.ts"
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
-import { CreateClusterWithVolumeHandler } from "../handlers/utils/createClusterWithVolume/index.ts"
-// import { StatusPodsCheckerHandler } from "../handlers/utils/statusPodsChecker/index.ts"
-// import { ListPodsHandler } from "../handlers/utils/listPods/index.ts"
-// import { ExposePortHandler } from "../handlers/utils/exposeServiceViaPort/index.ts"
+import type { Request } from "../handlers/request.type.ts"
 export async function run(){
-    const statusCheckerNginx = new StatusPodsCheckerHandler()
-    const listPods = new ListPodsHandler();
-    const exportPortHandler = new ExposePortHandler();
     const podProject = await select({
         message: 'What project do you want to implement?',
         options: [
@@ -17,13 +12,15 @@ export async function run(){
         ],
     });
     let handler: AbstractHandler
+    const request: Request  = {};
+    const statusPodsChecker = new StatusPodsCheckerHandler()
     switch (podProject) {
         case "sharing-file-to-pod-prometheus":
-            
-            handler = new NginxIngressControllerHandler();
-            listPods.setNext(exportPortHandler)
-            statusCheckerNginx.setNext(listPods)
-            handler.setNext(statusCheckerNginx)
+            const sharingFilePrometheusConfig = new SharingFilePrometheusConfigHandler();
+            const exportPortHandler = new ExposePortHandler()
+            statusPodsChecker.setNext(exportPortHandler)
+            sharingFilePrometheusConfig.setNext(statusPodsChecker)
+            await sharingFilePrometheusConfig.handle(request)
             break;
         default:
             break;

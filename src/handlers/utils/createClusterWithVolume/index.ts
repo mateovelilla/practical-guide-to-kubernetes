@@ -25,6 +25,7 @@ export class CreateClusterWithVolumeHandler extends AbstractHandler {
             loader.start(`Creating k3d-${clusterName} Cluster Server!`);
             const volumes = request.volumes.map(volume => ['--volume', `${volume.localVolume}:${volume.remoteVolume}`]).flat()
             const args = ["cluster", "create",`${request.clusterName}`]
+            console.log(args.concat(volumes))
             const { stdout: outputK3d, stderr: outputK3dError} = await this.runCommand("k3d",args.concat(volumes));
             log.info(outputK3d);
             log.error(outputK3dError)
