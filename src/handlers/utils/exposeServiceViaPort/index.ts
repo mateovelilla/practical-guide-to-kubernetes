@@ -4,7 +4,6 @@ import { AbstractHandler } from "../../handler.abstract.ts"
 import { type Request } from "../../request.type.ts"
 export class ExposePortHandler extends AbstractHandler {
     public async handle(request: Request){
-        console.log(request)
         const args = ["port-forward",`service/${request.serviceName}`,  `${request.exposedPort}:${request.localPort}`,"--address", "0.0.0.0"]
         if(request.namespace)
             args.push('-n', request.namespace)
