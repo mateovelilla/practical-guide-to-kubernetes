@@ -13,7 +13,7 @@ export class StatusPodsCheckerHandler extends AbstractHandler {
             while(loading) {
                 const { stdout: outputStatusPods } =  await super.runCommand("kubectl",args)
                 const statusPods = JSON.parse(outputStatusPods)
-                loading = !statusPods.items.every(pod=> pod.status.phase === 'Running')
+                loading = !(statusPods.items.every(pod=> pod.status.phase === 'Running') && statusPods.items.every(pod => pod.status.containerStatuses.every(container=> container.ready == true))) 
             }
             loader.stop("____________________________");
         } catch (error) {
