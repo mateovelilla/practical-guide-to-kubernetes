@@ -1,5 +1,6 @@
 import { select } from "@clack/prompts";
 import type { AbstractHandler } from "../handlers/handler.abstract.ts";
+import { SimpleConfigmapWithFilesSharedHandler } from "../handlers/configmaps/simpleConfigMapWithFilesShared/index.ts"
 export async function run(){
     const podProject = await select({
         message: 'What project do you want to implement?',
@@ -10,6 +11,7 @@ export async function run(){
     let handler: AbstractHandler
     switch (podProject) {
         case "simple-configmap-with-files-shared":
+            handler = new SimpleConfigmapWithFilesSharedHandler();
             break;
         default:
             break;

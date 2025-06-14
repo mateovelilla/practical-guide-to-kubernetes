@@ -6,7 +6,7 @@ import * as service from "./src/proxies/services.ts"
 import * as deployment from "./src/proxies/deployments.ts"
 import * as ingress from "./src/proxies/ingress.ts"
 import * as volumes from "./src/proxies/volumes.ts"
-import * as configmaps from "./src/proxies/configMaps"
+import * as configmaps from "./src/proxies/configmaps.ts"
 import { DeleteClusterHandler } from "./src/handlers/utils/deleteCluster/index.ts"
 import { CreateClusterHandler } from "./src/handlers/utils/createCluster/index.ts"
 import { AbstractHandler } from "./src/handlers/handler.abstract.ts";
