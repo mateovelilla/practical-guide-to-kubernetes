@@ -7,6 +7,7 @@ import * as deployment from "./src/proxies/deployments.ts"
 import * as ingress from "./src/proxies/ingress.ts"
 import * as volumes from "./src/proxies/volumes.ts"
 import * as configmaps from "./src/proxies/configmaps.ts"
+import * as secrets from "./src/proxies/secrets.ts"
 import { DeleteClusterHandler } from "./src/handlers/utils/deleteCluster/index.ts"
 import { CreateClusterHandler } from "./src/handlers/utils/createCluster/index.ts"
 import { AbstractHandler } from "./src/handlers/handler.abstract.ts";
@@ -20,9 +21,8 @@ const projects = await p.select({
     { value: 'ingress', label: 'Ingress Controllers' },
     { value: 'volumes', label: 'Volumes' },
     { value: 'configmaps', label: 'ConfigMaps' },
+    { value: 'secrets', label: 'Secrets' },
     { value: 'delete', label: 'Delete Cluster' },
-
-
   ],
 });
 const request: Request = {
@@ -51,6 +51,9 @@ switch (projects) {
     break;
   case "volumes":
       await volumes.run()
+    break;
+  case "secrets":
+      lastChain = await secrets.run()
     break;
   case "delete":
     lastChain = new DeleteClusterHandler();
