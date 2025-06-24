@@ -1,4 +1,8 @@
 # Practical Guide to Kubernetes
+<video id="shortVideo" controls width="1000" height="400">
+    <source src="shorts/practical-guide-to-kubernetes.mp4" type="video/mp4">
+    Tu navegador no soporta video HTML5.
+</video>
 
 ## 🚀 Overview
 
