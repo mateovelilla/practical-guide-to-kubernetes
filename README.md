@@ -1,9 +1,5 @@
 # Practical Guide to Kubernetes
-<video id="shortVideo" controls width="1000" height="400">
-    <source src="https://raw.githubusercontent.com/mateovelilla/practical-guide-to-kubernetes/main/shorts/practical-guide-to-kubernetes.mp4" type="video/mp4">
-    Tu navegador no soporta video HTML5.
-</video>
-
+[Watch Video](https://player.vimeo.com/video/1095888517)
 ## 🚀 Overview
 
 This repository offers a hands-on approach to mastering Kubernetes, focusing on real-world scenarios and best practices. It's designed for developers, DevOps engineers, and Kubernetes enthusiasts aiming to deepen their understanding through practical exercises and structured learning modules.
