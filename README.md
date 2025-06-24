@@ -1,6 +1,6 @@
 # Practical Guide to Kubernetes
 <video id="shortVideo" controls width="1000" height="400">
-    <source src="https://github.com/mateovelilla/practical-guide-to-kubernetes/blob/8a5118a96c8d3220c504730cf137d9d8552a8a66/shorts/practical-guide-to-kubernetes.mp4" type="video/mp4">
+    <source src="https://raw.githubusercontent.com/mateovelilla/practical-guide-to-kubernetes/main/shorts/practical-guide-to-kubernetes.mp4" type="video/mp4">
     Tu navegador no soporta video HTML5.
 </video>
 
