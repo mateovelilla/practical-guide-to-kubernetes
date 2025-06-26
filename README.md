@@ -1,9 +1,5 @@
 # Practical Guide to Kubernetes
-<video id="shortVideo" controls width="1000" height="400">
-    <source src="shorts/practical-guide-to-kubernetes.mp4" type="video/mp4">
-    Tu navegador no soporta video HTML5.
-</video>
-
+[Watch Video](https://player.vimeo.com/video/1095888517)
 ## 🚀 Overview
 This repository is a hands-on playground for mastering Kubernetes fundamentals and beyond. It includes practical examples and configurations covering:
 🐳 Pods and multi-container patterns
