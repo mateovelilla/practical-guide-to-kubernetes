@@ -5,8 +5,15 @@
 </video>
 
 ## 🚀 Overview
-
-This repository offers a hands-on approach to mastering Kubernetes, focusing on real-world scenarios and best practices. It's designed for developers, DevOps engineers, and Kubernetes enthusiasts aiming to deepen their understanding through practical exercises and structured learning modules.
+This repository is a hands-on playground for mastering Kubernetes fundamentals and beyond. It includes practical examples and configurations covering:
+🐳 Pods and multi-container patterns
+🔐 Secrets and 🔧 ConfigMaps for managing sensitive data and app configs
+📁 Volumes for persistent storage
+♻️ ReplicaSets and scalable Deployments
+🌐 Services for internal and external communication
+🌍 Ingress Controllers with NGINX for traffic routing
+🛠️ A custom CLI built in TypeScript to interact with Kubernetes resources
+Whether you're just starting out or strengthening your cloud-native skills, this repo is designed to help you build real-world understanding through code.
 
 ## 🧰 Technologies & Tools
 
