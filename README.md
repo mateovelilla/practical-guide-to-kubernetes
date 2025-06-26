@@ -1,5 +1,6 @@
 # Practical Guide to Kubernetes
-[Watch Video](https://player.vimeo.com/video/1095888517)
+![cover](https://raw.githubusercontent.com/mateovelilla/practical-guide-to-kubernetes/refs/heads/main/imgs/practical-guide-to-kubernetes.png)
+
 ## 🚀 Overview
 This repository is a hands-on playground for mastering Kubernetes fundamentals and beyond. It includes practical examples and configurations covering:
 🐳 Pods and multi-container patterns
